@@ -2,8 +2,8 @@
   "name": "react-share",
   "version": "4.4.0",
   "description": "Social media share buttons and share counts for React.",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./es/index.js",
+  "types": "./es/index.d.ts",
   "module": "./es/index.js",
   "sideEffects": false,
   "engines": {
@@ -12,7 +12,7 @@
   },
   "files": [
     "lib/**/*",
-    "es/**/*"
+    "es"
   ],
   "scripts": {
     "build": "npm run lint && npm run build:commonjs && npm run build:es",
