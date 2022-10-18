@@ -115,30 +115,41 @@ var ShareButton = /** @class */ (function (_super) {
             var windowConfig = __assign({ height: windowHeight, width: windowWidth }, (windowPosition === 'windowCenter'
                 ? getBoxPositionOnWindowCenter(windowWidth, windowHeight)
                 : getBoxPositionOnScreenCenter(windowWidth, windowHeight)));
-            windowOpen(link, windowConfig, onShareWindowClose);
+            return windowOpen(link, windowConfig, onShareWindowClose);
         };
         _this.handleClick = function (event) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, beforeOnClick, disabled, networkLink, onClick, url, openShareDialogOnClick, opts, link, returnVal;
+            var _a, beforeOnClick, disabled, networkLink, onClick, openShareDialogOnClick, opts, url, shareDialog, link, returnVal;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _a = this.props, beforeOnClick = _a.beforeOnClick, disabled = _a.disabled, networkLink = _a.networkLink, onClick = _a.onClick, url = _a.url, openShareDialogOnClick = _a.openShareDialogOnClick, opts = _a.opts;
+                        _a = this.props, beforeOnClick = _a.beforeOnClick, disabled = _a.disabled, networkLink = _a.networkLink, onClick = _a.onClick, openShareDialogOnClick = _a.openShareDialogOnClick, opts = _a.opts;
+                        url = this.props.url;
+                        if (openShareDialogOnClick) {
+                            shareDialog = this.openShareDialog('');
+                        }
+                        if (!(typeof url == 'function')) return [3 /*break*/, 2];
+                        return [4 /*yield*/, url()];
+                    case 1:
+                        url = _b.sent();
+                        _b.label = 2;
+                    case 2: return [4 /*yield*/, this.awaitLinkOpts(opts)];
+                    case 3:
+                        _b.sent();
                         link = networkLink(url, opts);
+                        if (shareDialog)
+                            shareDialog.location.href = link;
                         if (disabled) {
                             return [2 /*return*/];
                         }
                         event.preventDefault();
-                        if (!beforeOnClick) return [3 /*break*/, 2];
+                        if (!beforeOnClick) return [3 /*break*/, 5];
                         returnVal = beforeOnClick();
-                        if (!isPromise(returnVal)) return [3 /*break*/, 2];
+                        if (!isPromise(returnVal)) return [3 /*break*/, 5];
                         return [4 /*yield*/, returnVal];
-                    case 1:
+                    case 4:
                         _b.sent();
-                        _b.label = 2;
-                    case 2:
-                        if (openShareDialogOnClick) {
-                            this.openShareDialog(link);
-                        }
+                        _b.label = 5;
+                    case 5:
                         if (onClick) {
                             onClick(event, link);
                         }
@@ -148,6 +159,41 @@ var ShareButton = /** @class */ (function (_super) {
         }); };
         return _this;
     }
+    ShareButton.prototype.awaitLinkOpts = function (opts) {
+        return __awaiter(this, void 0, void 0, function () {
+            var callableProperties, _a, _b, _i, i, propName, option;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        callableProperties = ['quote', 'title'];
+                        _a = [];
+                        for (_b in callableProperties)
+                            _a.push(_b);
+                        _i = 0;
+                        _c.label = 1;
+                    case 1:
+                        if (!(_i < _a.length)) return [3 /*break*/, 5];
+                        i = _a[_i];
+                        propName = callableProperties[i];
+                        option = opts[propName];
+                        if (!(typeof option == 'function')) return [3 /*break*/, 4];
+                        option = option();
+                        if (!isPromise(option)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, option];
+                    case 2:
+                        option = _c.sent();
+                        _c.label = 3;
+                    case 3:
+                        opts[propName] = option;
+                        _c.label = 4;
+                    case 4:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
     ShareButton.prototype.render = function () {
         var _a = this.props, beforeOnClick = _a.beforeOnClick, children = _a.children, className = _a.className, disabled = _a.disabled, disabledStyle = _a.disabledStyle, forwardedRef = _a.forwardedRef, networkLink = _a.networkLink, networkName = _a.networkName, onShareWindowClose = _a.onShareWindowClose, openShareDialogOnClick = _a.openShareDialogOnClick, opts = _a.opts, resetButtonStyle = _a.resetButtonStyle, style = _a.style, url = _a.url, windowHeight = _a.windowHeight, windowPosition = _a.windowPosition, windowWidth = _a.windowWidth, rest = __rest(_a, ["beforeOnClick", "children", "className", "disabled", "disabledStyle", "forwardedRef", "networkLink", "networkName", "onShareWindowClose", "openShareDialogOnClick", "opts", "resetButtonStyle", "style", "url", "windowHeight", "windowPosition", "windowWidth"]);
         var newClassName = cx('react-share__ShareButton', {

@@ -18,9 +18,9 @@ interface CustomProps<LinkOptions> {
     openShareDialogOnClick?: boolean;
     opts: LinkOptions;
     /**
-     * URL of the shared page
+     * URL of the shared page, can be an async function that resolves a URL
      */
-    url: string;
+    url: string | (() => Promise<string>);
     style?: React.CSSProperties;
     windowWidth?: number;
     windowHeight?: number;
@@ -45,7 +45,8 @@ export default class ShareButton<LinkOptions> extends Component<Props<LinkOption
         openShareDialogOnClick: boolean;
         resetButtonStyle: boolean;
     };
-    openShareDialog: (link: string) => void;
+    openShareDialog: (link: string) => Window | null;
+    awaitLinkOpts(opts: any): Promise<void>;
     handleClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
     render(): JSX.Element;
 }
